@@ -7,6 +7,7 @@ import router from './routes/user'
 
 const app = express();
 app.use(express.urlencoded({extended: true}));
+app.use(express.json());
 app.use(cookieParser());
 sequelize.authenticate()
 User.sync()

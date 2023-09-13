@@ -2,6 +2,13 @@ import { sequelize } from "../config/database";
 import { User } from "../models/User";
 import bcrypt from "bcrypt";
 
+interface User{
+  firstName: string;
+  secondName: string;
+  password: string;
+  email: string;
+}
+
 export async function create(
   firstName: string,
   secondName: string,
@@ -37,15 +44,37 @@ export async function getOneById(userId: number) {
 }
 
 export async function getOneByEmail(email: string) {
-    try {
-      const user = await User.findOne({
-        where: {
-          email: email,
-        },
-      });
-  
-      return user;
-    } catch (error) {
-      return false;
-    }
+  try {
+    const user = await User.findOne({
+      where: {
+        email: email,
+      },
+    });
+
+    return user;
+  } catch (error) {
+    return false;
   }
+}
+
+export async function updateUserByEmail(
+  firstName: string,
+  secondName: string,
+  email: string
+) {
+  try {
+    const foundUser:User = await User.findOne({
+      where: {
+        email: email,
+      },
+    });
+    if(!foundUser){
+      throw "Usuário não encontrado"
+    }
+    foundUser.firstName = firstName;
+    foundUser.secondName = secondName;
+    await foundUser.save();
+  } catch (error) {
+    throw "Usuário não encontrado";
+  }
+}

@@ -5,6 +5,8 @@ import {
   updateUserByEmail,
   deleteUserByEmail
 } from "../repository/UsersRepository";
+import bcrypt from "bcrypt";
+
 
 export async function createUser(
   firstName: string,
@@ -21,7 +23,8 @@ export async function createUser(
       throw "Usuário já existe";
     }
 
-    const createdUser = await create(firstName, secondName, email, password);
+    const encryptedPassword = await bcrypt.hash(password, 10);
+    const createdUser = await create(firstName, secondName, email, encryptedPassword);
     return createdUser;
   } catch (error) {
     throw "Precisa de identificações";

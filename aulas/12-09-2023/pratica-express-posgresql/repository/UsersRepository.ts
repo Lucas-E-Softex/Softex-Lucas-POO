@@ -1,6 +1,5 @@
 import { sequelize } from "../config/database";
 import User from "../models/User";
-import bcrypt from "bcrypt";
 import { Model, InferAttributes, InferCreationAttributes } from "sequelize";
 
 interface IUser{
@@ -18,10 +17,9 @@ export async function create(
   firstName: string,
   secondName: string,
   email: string,
-  password: string
+  encryptedPassword: string
 ) {
   try {
-    const encryptedPassword = await bcrypt.hash(password, 10);
     const newUser:User | null = await User.create({
       firstName: firstName,
       secondName: secondName,

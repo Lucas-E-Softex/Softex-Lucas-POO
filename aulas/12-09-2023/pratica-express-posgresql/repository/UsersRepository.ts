@@ -1,12 +1,17 @@
 import { sequelize } from "../config/database";
-import { User } from "../models/User";
+import User from "../models/User";
 import bcrypt from "bcrypt";
+import { Model, InferAttributes, InferCreationAttributes } from "sequelize";
 
-interface User{
+interface IUser{
   firstName: string;
   secondName: string;
   password: string;
   email: string;
+}
+
+interface IUserCreation extends IUser{
+  id: number;
 }
 
 export async function create(
@@ -17,7 +22,7 @@ export async function create(
 ) {
   try {
     const encryptedPassword = await bcrypt.hash(password, 10);
-    const newUser = await User.create({
+    const newUser:User | null = await User.create({
       firstName: firstName,
       secondName: secondName,
       email: email,
@@ -63,7 +68,7 @@ export async function updateUserByEmail(
   email: string
 ) {
   try {
-    const foundUser:User = await User.findOne({
+    const foundUser = await User.findOne({
       where: {
         email: email,
       },
@@ -74,7 +79,21 @@ export async function updateUserByEmail(
     foundUser.firstName = firstName;
     foundUser.secondName = secondName;
     await foundUser.save();
+    return foundUser;
   } catch (error) {
     throw "Usuário não encontrado";
+  }
+}
+
+export async function deleteUserByEmail(email:string){
+  try {
+    await User.destroy({
+      where: {
+        email: email
+      }
+    })
+    return true
+  } catch (error) {
+    throw "no user found"
   }
 }

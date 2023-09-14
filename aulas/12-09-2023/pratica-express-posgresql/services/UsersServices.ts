@@ -64,3 +64,15 @@ export async function deleteByEmail(email:string){
     throw "no user found";
   }
 }
+
+export async function getByEmail(email:string){
+  try {
+    const user = await getOneByEmail(email);
+    if(user){
+      return user
+    }
+    throw "no user found"
+  } catch (error) {
+    throw "No user found"
+  }
+}

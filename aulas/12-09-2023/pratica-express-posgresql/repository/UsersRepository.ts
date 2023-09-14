@@ -54,7 +54,10 @@ export async function getOneByEmail(email: string) {
       },
     });
 
-    return user;
+    if(user){
+      return user;
+    }
+    throw "no user found"
   } catch (error) {
     return false;
   }

@@ -1,22 +1,22 @@
-class Animal{
+class AnimalPrimary{
   public falar():string{
     return "Animal faz som"
   }
 }
 
-class Cachorro extends Animal{
+class Cachorro extends AnimalPrimary{
   public falar():string{
     return "cachorro faz som"
   }
 }
 
-class Gato extends Animal{
+class Gato extends AnimalPrimary{
   public falar():string{
     return "gato faz som"
   }
 }
 
-class Peixe extends Animal{
+class Peixe extends AnimalPrimary{
   public falar():string{
     return "peixe faz som"
   }

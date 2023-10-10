@@ -4,7 +4,7 @@ import { AppDataSource } from "../data-source";
 
 export class UserRepository extends Repository<User>{
     private static instance:UserRepository;
-    public constructor(){
+    private constructor(){
         super(User, AppDataSource.manager)
     }
 
@@ -16,7 +16,7 @@ export class UserRepository extends Repository<User>{
     }
 
     public async getUserByEmail(email:string){
-        const foundUser = await this.find({
+        const foundUser = await this.findOne({
             where:{
                 email: email
             }

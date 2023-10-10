@@ -1,11 +1,13 @@
-import { UserRepository } from "../repository/userRepository";
+import { UserRepository } from "../repository/user.repository";
 import bcrypt from 'bcrypt'
+import { User } from "../entity/User";
+import { UserDTO } from "../dto/user.dto";
 
 export class UserService{
     private static instance:UserService;
     private userRepository:UserRepository;
 
-    public constructor(){
+    private constructor(){
         this.userRepository = UserRepository.getInstance();
     }
 
@@ -35,24 +37,34 @@ export class UserService{
         }
     }
 
-    public async updateUser(newUser:User){
+    public async updateUser(email, name){
         try {
             const foundUser = await this.userRepository.getUserByEmail(email);
-            if(foundUser){
-                throw new Error("Usuário já existe com esse email")
+            if(!foundUser){
+                throw new Error("Usuário não encontrado")
             }
-            const hashedPassword:string = await bcrypt.hash(password, 10);
-            this.userRepository.createUser(email, name, hashedPassword);
+            foundUser.email = email;
+            foundUser.name = name;
+
+            this.userRepository.updateUser(foundUser);
         } catch (error) {
             throw error;
         }
     }
 
     public async deleteUser(user:User){
-        await this.delete(user);
+        try {
+            const foundUser = await this.userRepository.getUserByEmail(user.email);
+            if(!foundUser){
+                throw new Error('Usuário não existe');
+            }
+            await this.userRepository.deleteUser(user);
+        } catch (error) {
+            throw error
+        }
     }
 
-    public getInstance(){
+    static getInstance(){
         if(!UserService.instance){
             UserService.instance = new UserService();
         }

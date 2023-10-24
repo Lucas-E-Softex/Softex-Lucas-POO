@@ -9,7 +9,7 @@ export const AppDataSource = new DataSource({
     port: 5432,
     username: "lucas",
     password: "lucas123",
-    database: "softexEcommerce",
+    database: "apisoftex",
     synchronize: true,
     logging: false,
     entities: [User, Product],

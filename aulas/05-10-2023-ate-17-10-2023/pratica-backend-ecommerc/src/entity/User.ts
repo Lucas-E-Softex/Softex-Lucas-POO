@@ -23,9 +23,7 @@ export class User {
     })
     password:string
 
-    @Column({
-        nullable:true
-    })
+
     @OneToMany(() => Product, (product) => product.user)
-    products:Array<Product>
+    products:Product[]
 }

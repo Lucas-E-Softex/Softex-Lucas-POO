@@ -19,7 +19,8 @@ export class UserService{
                 throw new Error("Usuário já existe com esse email")
             }
             const hashedPassword:string = await bcrypt.hash(password, 10);
-            this.userRepository.createUser(email, name, hashedPassword);
+            await this.userRepository.createUser(email, name, hashedPassword);
+            return true;
         } catch (error) {
             throw error;
         }

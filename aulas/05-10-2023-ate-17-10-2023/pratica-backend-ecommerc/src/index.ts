@@ -1,10 +1,15 @@
+import "reflect-metadata"
 import { AppDataSource } from "./data-source"
 import { User } from "./entity/User"
 import express from 'express'
 import http from 'http'
 
-const app = express();
+export const app = express();
 const server = http.createServer(app);
+
+import { userControllerObject } from "./routes/user.routes"
+
+app.use('/user', userControllerObject.getRouter())
 
 AppDataSource.initialize().then(async () => {
     console.log('Database connected');

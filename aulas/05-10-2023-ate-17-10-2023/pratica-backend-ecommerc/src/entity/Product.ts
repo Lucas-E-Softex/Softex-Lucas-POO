@@ -14,8 +14,6 @@ export class Product{
     @Column()
     descricao:string
 
-    @Column()
     @ManyToOne(() => User, user => user.products)
-    @JoinColumn()
     user:User
 }
